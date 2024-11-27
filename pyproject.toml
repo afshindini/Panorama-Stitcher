@@ -17,6 +17,10 @@ max-attributes=10
 max-positional-arguments=6
 max-args=6
 
+[tool.pylint.typecheck]
+generated-members = "cv2.*"
+ignored-checks-for-mixins = ["no-member"]
+
 [tool.pylint.messages_control]
 disable=["fixme"]
 
