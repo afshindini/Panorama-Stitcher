@@ -8,7 +8,7 @@ import click
 from panaroma_stitcher import __version__
 from panaroma_stitcher.logging import config_logger
 from panaroma_stitcher.kornia import KorniaStitcher
-
+from panaroma_stitcher.opencv_simple import SimpleStitcher
 
 logger = logging.getLogger(__name__)
 
@@ -52,9 +52,10 @@ def panaroma_stitcher_cli(
     config_logger(log_level)
     ctx.ensure_object(dict)
     ctx.obj["resize_shape"] = resize_shape
-    logger.info(
-        "Images from %s are shaped to %s for stitching.", data_path, resize_shape
-    )
+    if resize_shape:
+        logger.info(
+            "Images from %s are shaped to %s for stitching.", data_path, resize_shape
+        )
     ctx.obj["data_path"] = data_path
     ctx.obj["result_path"] = result_path
 
@@ -103,4 +104,22 @@ def kornia(
         stitcher.keynote_matcher(
             number_of_features=features, match_mode=matcher, thr=thr
         )
+    stitcher.stitcher(ctx.obj["result_path"])
+
+
+@panaroma_stitcher_cli.command()
+@click.option(
+    "--stitcher_type",
+    default="panorama",
+    type=click.Choice(["scan", "panorama"], case_sensitive=False),
+    help="Stitcher type for opencv stitching method.",
+)
+@click.pass_context
+def opencv_simple(ctx: Any, stitcher_type: str) -> None:
+    """This is cli for opencv simple stitcher"""
+    stitcher = SimpleStitcher(
+        image_dir=Path(ctx.obj["data_path"]),
+        resize_shape=ctx.obj["resize_shape"],
+        stitcher_type=stitcher_type,
+    )
     stitcher.stitcher(ctx.obj["result_path"])
