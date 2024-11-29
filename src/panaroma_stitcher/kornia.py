@@ -6,6 +6,7 @@ from typing import Any, Optional
 import logging
 
 import torch
+import kornia as krn
 import kornia.feature as krnfeat
 from kornia.contrib import ImageStitcher
 from .utility import ImageLoader
@@ -58,4 +59,4 @@ class KorniaStitcher(ImageLoader):
         image_stitcher = ImageStitcher(self.matcher, estimator="ransac")
         with torch.no_grad():
             result = image_stitcher(*self.images)
-        self.save_result(result, result_path)
+        self.save_result(krn.tensor_to_image(result), result_path)  # type: ignore
