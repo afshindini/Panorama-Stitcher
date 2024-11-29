@@ -2,7 +2,7 @@
 
 from pathlib import Path
 from dataclasses import dataclass, field
-from typing import List, Any, Generator, Optional, Tuple
+from typing import List, Any, Optional, Tuple
 
 import logging
 import torch
@@ -28,9 +28,14 @@ class ImageLoader:
             logger.info("%s is not available.", self.device)
             self.device = "cpu"
 
-    def _list_images(self) -> Generator[Path, None, None]:
+    def _list_images(self) -> List[Path]:
         """List images in directory"""
-        return self.image_dir.glob("*.jpg")
+        return sorted(
+            filter(
+                lambda path: path.suffix in [".jpg", ".png", ".tif"],
+                self.image_dir.glob("*"),
+            )
+        )
 
     def opencv_load_images(self) -> None:
         """Load images for opencv stitcher from a directory"""
@@ -81,7 +86,4 @@ class ImageLoader:
     @staticmethod
     def save_result(img: Any, save_path: str) -> None:
         """Save the final stitching result"""
-        if isinstance(img, torch.Tensor):
-            plt.imsave(save_path, krn.tensor_to_image(img))  # type: ignore
-        else:
-            plt.imsave(save_path, img)
+        plt.imsave(save_path, img)
