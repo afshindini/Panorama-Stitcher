@@ -1,6 +1,6 @@
 """Run the main code for panorama stitcher"""
 
-from typing import Tuple, Any, Optional
+from typing import Tuple, Any
 from pathlib import Path
 import logging
 import click
@@ -141,13 +141,13 @@ def opencv_simple(ctx: Any, stitcher_type: str) -> None:
 )
 @click.option(
     "--number_feature",
-    default=None,
+    default=20,
     type=int,
     help="Number of features in detector methods.",
 )
 @click.pass_context
 def keypoint_stitcher(
-    ctx: Any, matching_method: str, detector_method: str, number_feature: Optional[int]
+    ctx: Any, matching_method: str, detector_method: str, number_feature: int
 ) -> None:
     """This is cli for keypoint matching stitcher techniques"""
     stitcher = KeypointStitcher(
