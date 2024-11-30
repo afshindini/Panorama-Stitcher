@@ -1,6 +1,6 @@
 """Run the main code for panorama stitcher"""
 
-from typing import Tuple, Any
+from typing import Tuple, Any, Optional
 from pathlib import Path
 import logging
 import click
@@ -9,6 +9,7 @@ from panaroma_stitcher import __version__
 from panaroma_stitcher.logging import config_logger
 from panaroma_stitcher.kornia import KorniaStitcher
 from panaroma_stitcher.opencv_simple import SimpleStitcher
+from panaroma_stitcher.keypoint_stitcher import KeypointStitcher
 
 logger = logging.getLogger(__name__)
 
@@ -121,5 +122,39 @@ def opencv_simple(ctx: Any, stitcher_type: str) -> None:
         image_dir=Path(ctx.obj["data_path"]),
         resize_shape=ctx.obj["resize_shape"],
         stitcher_type=stitcher_type,
+    )
+    stitcher.stitcher(ctx.obj["result_path"])
+
+
+@panaroma_stitcher_cli.command()
+@click.option(
+    "--matching_method",
+    default="bf",
+    type=click.Choice(["bf", "flann"], case_sensitive=False),
+    help="Choose matching type to be bruteforce/knn.",
+)
+@click.option(
+    "--detector_method",
+    default="sift",
+    type=click.Choice(["sift", "orb", "brisk"], case_sensitive=False),
+    help="Choose keypoint detection method.",
+)
+@click.option(
+    "--number_feature",
+    default=None,
+    type=int,
+    help="Number of features in detector methods.",
+)
+@click.pass_context
+def keypoint_stitcher(
+    ctx: Any, matching_method: str, detector_method: str, number_feature: Optional[int]
+) -> None:
+    """This is cli for keypoint matching stitcher techniques"""
+    stitcher = KeypointStitcher(
+        image_dir=Path(ctx.obj["data_path"]),
+        resize_shape=ctx.obj["resize_shape"],
+        feature_detector=detector_method,
+        matcher_type=matching_method,
+        number_feature=number_feature,
     )
     stitcher.stitcher(ctx.obj["result_path"])
