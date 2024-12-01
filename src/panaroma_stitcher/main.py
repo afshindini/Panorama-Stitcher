@@ -142,7 +142,7 @@ def opencv_simple(ctx: Any, stitcher_type: str) -> None:
 )
 @click.option(
     "--number_feature",
-    default=20,
+    default=500,
     type=int,
     help="Number of features in detector methods.",
 )
