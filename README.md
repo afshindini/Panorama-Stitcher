@@ -24,6 +24,25 @@ panaroma_stitcher -vv -d ./test_data/boat opencv-simple --stitcher_type panorama
 ```
 This method is recommended than other methods as it is fast, and it can stitch multi high resolution images properly.
 
+### Detailed Stitching/opencv Stitcher
+This method is a more detailed version of the above simple stitcher methods based on opencv/stitching libraries. It is quite fast and have good accuracy
+specifically in stitching multi images. It is important to know that in some cases it is needed to modify the methods parameters to get accurate results.
+Some of the options that can be set in this method are:
+- `--detect_method` defines the key point detection methods and can be chosen from "sift", "orb", "brisk", or "akaze".
+- `--match_type` defines the matching method and can be selected as "affine" or "homography".
+- `--num_feat` defines the number of features in the detector.
+- `--device` whether to use the gpu or cpu as processing unit.
+- `--conf_thr` defines the threshold for finding key points.
+- `--cam_est` defines the camera estimator to be "affine" or "homography".
+- `--cam_adj` defines the camera adjustor to be "ray", "reproj", "affine", or "no".
+Some examples of running this code for test images are:
+```shell
+panaroma_stitcher -vv -d ./test_data/boat detailed-stitcher --detect_method sift --match_type homography --num_feat 500 --device cpu --conf_thr 0.05 --cam_est homography --cam_adj ray
+panaroma_stitcher -vv -d ./test_data/map detailed-stitcher --detect_method brisk --match_type homography --num_feat 500 --device cpu --conf_thr 0.05 --cam_est homography --cam_adj ray
+panaroma_stitcher -vv -d ./test_data/castle detailed-stitcher --detect_method orb --match_type homography --num_feat 500 --device cpu --conf_thr 0.05 --cam_est homography --cam_adj ray
+panaroma_stitcher -vv -d ./test_data/newspaper detailed-stitcher --detect_method brisk --match_type homography --num_feat 500 --device cpu --conf_thr 0.05 --cam_est homography --cam_adj ray
+```
+
 ### Kornia Stitcher
 This method is based on `kornia` library, and three feature matcher as `LOFTR` deep feature matcher, `GFTTAffNetHardNet`,
 and `KeyNetAffNetHardNet` matcher. The accuracy of this method is good specifically for stitching two images. However, since it uses a deep feature extractor and matcher
