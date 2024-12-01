@@ -165,7 +165,7 @@ def keypoint_stitcher(
 @click.option(
     "--detect_method",
     default="sift",
-    type=click.Choice(["sift", "orb", "brisk", "azake"], case_sensitive=False),
+    type=click.Choice(["sift", "orb", "brisk", "akaze"], case_sensitive=False),
     help="Choose keypoint detection method.",
 )
 @click.option(
