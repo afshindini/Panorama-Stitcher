@@ -10,6 +10,7 @@ from panaroma_stitcher.logging import config_logger
 from panaroma_stitcher.kornia import KorniaStitcher
 from panaroma_stitcher.opencv_simple import SimpleStitcher
 from panaroma_stitcher.keypoint_stitcher import KeypointStitcher
+from panaroma_stitcher.detailed_stitcher import DetailedStitcher
 
 logger = logging.getLogger(__name__)
 
@@ -156,5 +157,66 @@ def keypoint_stitcher(
         feature_detector=detector_method,
         matcher_type=matching_method,
         number_feature=number_feature,
+    )
+    stitcher.stitcher(ctx.obj["result_path"])
+
+
+@panaroma_stitcher_cli.command()
+@click.option(
+    "--detect_method",
+    default="sift",
+    type=click.Choice(["sift", "orb", "brisk", "azake"], case_sensitive=False),
+    help="Choose keypoint detection method.",
+)
+@click.option(
+    "--match_type",
+    default="homography",
+    type=click.Choice(["affine", "homography"], case_sensitive=False),
+    help="Choose matching type to be affine/homography.",
+)
+@click.option(
+    "--num_feat", default=500, type=int, help="Number of features in detector methods."
+)
+@click.option("--device", type=str, default="cpu", help="Use cuda/cpu")
+@click.option(
+    "--conf_thr",
+    type=float,
+    default=0.05,
+    help="Confidence threshold for key point detection.",
+)
+@click.option(
+    "--cam_est",
+    default="homography",
+    type=click.Choice(["affine", "homography"], case_sensitive=False),
+    help="Choose camera estimator.",
+)
+@click.option(
+    "--cam_adj",
+    default="ray",
+    type=click.Choice(["ray", "reproj", "affine", "no"], case_sensitive=False),
+    help="Choose camera adjustor.",
+)
+@click.pass_context
+def detailed_stitcher(  # pylint: disable=R0913, R0917
+    ctx: Any,
+    detect_method: str,
+    match_type: str,
+    num_feat: int,
+    device: str,
+    conf_thr: float,
+    cam_est: str,
+    cam_adj: str,
+) -> None:
+    """This is cli for detailed stitcher techniques from stitching library"""
+    stitcher = DetailedStitcher(
+        image_dir=Path(ctx.obj["data_path"]),
+        resize_shape=ctx.obj["resize_shape"],
+        feature_number=num_feat,
+        device=device,
+        detector_method=detect_method,
+        matcher_type=match_type,
+        confidence_threshold=conf_thr,
+        camera_adjustor=cam_adj,
+        camera_estimator=cam_est,
     )
     stitcher.stitcher(ctx.obj["result_path"])
