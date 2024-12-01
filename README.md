@@ -1,4 +1,4 @@
-# panorama stitcher
+# Panorama Stitcher
 This rep can stitch multi panorama images. It contains several deep and image-based analysis to do so.
 
 
@@ -24,7 +24,7 @@ panaroma_stitcher -vv -d ./test_data/boat opencv-simple --stitcher_type panorama
 ```
 This method is recommended than other methods as it is fast, and it can stitch multi high resolution images properly.
 
-### Detailed Stitching/opencv Stitcher
+### Detailed Stitching/Opencv Stitcher
 This method is a more detailed version of the above simple stitcher methods based on opencv/stitching libraries. It is quite fast and have good accuracy
 specifically in stitching multi images. It is important to know that in some cases it is needed to modify the methods parameters to get accurate results.
 Some of the options that can be set in this method are:
@@ -35,6 +35,7 @@ Some of the options that can be set in this method are:
 - `--conf_thr` defines the threshold for finding key points.
 - `--cam_est` defines the camera estimator to be "affine" or "homography".
 - `--cam_adj` defines the camera adjustor to be "ray", "reproj", "affine", or "no".
+
 Some examples of running this code for test images are:
 ```shell
 panaroma_stitcher -vv -d ./test_data/boat detailed-stitcher --detect_method sift --match_type homography --num_feat 500 --device cpu --conf_thr 0.05 --cam_est homography --cam_adj ray
@@ -58,6 +59,19 @@ Some examples of using these methods:
 panaroma_stitcher -vv -d ./test_data/mountain kornia --method loftr --loftr_model outdoor
 panaroma_stitcher -vv -d ./test_data/river kornia --method local --features 100 --matcher smnn
 panaroma_stitcher -vv -d ./test_data/mountain kornia --method keynote --features 100 --matcher mnn
+```
+
+### Keypoint Stitcher
+This is a simple stitcher that tries to stitch a pair of images from a folder recursively. It performs well in some cases where the other methods do not work well.
+However, it might be a bit slow if the number of features in the detector are large. Some options for this method are:
+- `--matching_method` to be selected as "bf" or "flann".
+- `--detector_method` to be selected as "sift", "orb", or "brisk".
+- `--number_feature` can affect the performance significantly in some cases.
+
+Some examples of using this method:
+```shell
+panaroma_stitcher -vv -d ./test_data/mountain keypoint-stitcher --matching_method bf --detector_method sift --number_feature 500
+panaroma_stitcher -vv -d ./test_data/river keypoint-stitcher --matching_method bf --detector_method sift --number_feature 500
 ```
 
 ## How to Develop
