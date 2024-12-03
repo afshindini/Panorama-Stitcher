@@ -28,6 +28,9 @@ disable=["fixme"]
 min-similarity-lines = 8    # Minimum lines number of a similarity.
 ignore-imports = true       # Ignore imports when computing similarities.
 
+[tool.bandit.assert_used]
+skips = ["B101"]
+
 [tool.pytest.ini_options]
 junit_family="xunit2"
 addopts="--cov=panaroma_stitcher --cov-fail-under=60 --cov-branch"
