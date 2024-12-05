@@ -31,8 +31,8 @@ class SimpleStitcher(ImageLoader):
             "stitch_status",
             [
                 "ERR_NEED_MORE_IMGS",
-                " ERR_HOMOGRAPHY_EST_FAIL",
-                " ERR_CAMERA_PARAMS_ADJUST_FAIL",
+                "ERR_HOMOGRAPHY_EST_FAIL",
+                "ERR_CAMERA_PARAMS_ADJUST_FAIL",
             ],
         )(
             status_number
