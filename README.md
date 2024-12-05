@@ -12,7 +12,13 @@ General options can be selected before applying the stitching methods. These opt
 - Define the result path with `--result_path` or `-s` (Default directory is `./`).
 - Select the verbose value for logging for example as `-v` depending on what kind of logs you want to see.
 
-The available methods are as following.
+The available methods are as:
+- [Simple Opencv Stitcher](###-simple-opencv-stitcher)
+- [Detailed Stitching/Opencv Stitcher](###-detailed-stitching/opencv-stitcher)
+- [Kornia Stitcher](###-kornia-stitcher)
+- [Keypoint Stitcher](###-keypoint-stitcher)
+- [Simple Opencv Stitcher](###-simple-opencv-stitcher)
+
 ### Simple OpenCV Stitcher
 This method mainly uses stitcher class from opencv to create the panorama images from multi images. It is one of the fastest and applicable methods in case of multi-image stitching.
 Only one option should be set for this method as:
