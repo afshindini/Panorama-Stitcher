@@ -80,6 +80,23 @@ panaroma_stitcher -vv -d ./test_data/mountain keypoint-stitcher --matching_metho
 panaroma_stitcher -vv -d ./test_data/river keypoint-stitcher --matching_method bf --detector_method sift --number_feature 500
 ```
 
+### Sequential Stitcher
+This is a simple, fast, and accurate and sequential stitcher images that tries to find the similarity between pairs of images and then locate the images in the final stitched image properly.
+It is good to know that the current code is written in a such a way that the input images should be taken from left to right.
+If it is not the case then a simple modification should be done based on how the images are taken (for example if they are taken from right to left.)
+Some options for this method are:
+- `--matching_method` to be selected as "bf" or "flann".
+- `--detector_method` to be selected as "sift", "orb", or "brisk".
+- `--number_feature` can affect the performance significantly in some cases.
+- `--final_shape` is the final image size.
+
+Some examples of using this method:
+```shell
+panaroma_stitcher -vv -d ./test_data/boat sequential-stitcher --matching_method bf --detector_method sift --number_feature 500 --final_shape 3000 18000
+panaroma_stitcher -vv -d ./test_data/river sequential-stitcher --matching_method bf --detector_method sift --number_feature 500 --final_shape 1000 3000
+panaroma_stitcher -vv -d ./test_data/mountain sequential-stitcher --matching_method bf --detector_method sift --number_feature 500 --final_shape 300 800
+```
+
 ## How to Develop
 Do the following only once after creating your project:
 - Init the git repo with `git init`.
