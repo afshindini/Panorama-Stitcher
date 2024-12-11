@@ -11,6 +11,7 @@ from panaroma_stitcher.kornia import KorniaStitcher
 from panaroma_stitcher.opencv_simple import SimpleStitcher
 from panaroma_stitcher.keypoint_stitcher import KeypointStitcher
 from panaroma_stitcher.detailed_stitcher import DetailedStitcher
+from panaroma_stitcher.sequential_stitcher import SequentialStitcher
 
 logger = logging.getLogger(__name__)
 
@@ -218,5 +219,45 @@ def detailed_stitcher(  # pylint: disable=R0913, R0917
         confidence_threshold=conf_thr,
         camera_adjustor=cam_adj,
         camera_estimator=cam_est,
+    )
+    stitcher.stitcher(ctx.obj["result_path"])
+
+
+@panaroma_stitcher_cli.command()
+@click.option(
+    "--matching_method",
+    default="bf",
+    type=click.Choice(["bf", "flann"], case_sensitive=False),
+    help="Choose matching type to be bruteforce/knn.",
+)
+@click.option(
+    "--detector_method",
+    default="sift",
+    type=click.Choice(["sift", "orb", "brisk"], case_sensitive=False),
+    help="Choose keypoint detection method.",
+)
+@click.option(
+    "--number_feature",
+    default=500,
+    type=int,
+    help="Number of features in detector methods.",
+)
+@click.option("--final_shape", type=(int, int), help="Final result image shape.")
+@click.pass_context
+def sequential_stitcher(
+    ctx: Any,
+    matching_method: str,
+    detector_method: str,
+    number_feature: int,
+    final_shape: Tuple[int],
+) -> None:
+    """This is cli for sequential stitcher techniques"""
+    stitcher = SequentialStitcher(
+        image_dir=Path(ctx.obj["data_path"]),
+        resize_shape=ctx.obj["resize_shape"],
+        feature_detector=detector_method,
+        matcher_type=matching_method,
+        number_feature=number_feature,
+        final_size=final_shape,
     )
     stitcher.stitcher(ctx.obj["result_path"])
