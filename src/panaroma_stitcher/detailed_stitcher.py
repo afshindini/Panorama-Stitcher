@@ -36,9 +36,11 @@ class DetailedStitcher(ImageLoader):
             "adjuster": self.camera_adjustor,
         }
 
-    def stitcher(self, result_path: str) -> None:
+    def stitcher(self, result_path: str, framer: bool) -> None:
         """Stitcher based on stitching library"""
         image_stitcher = Stitcher(**self._create_config())
         stitched_image = image_stitcher.stitch(self.images)
         logger.info("Stitching images was successful.")
-        self.save_result(cv2.cvtColor(stitched_image, cv2.COLOR_BGR2RGB), result_path)
+        self.save_result(
+            cv2.cvtColor(stitched_image, cv2.COLOR_BGR2RGB), result_path, framer
+        )
