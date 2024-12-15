@@ -42,5 +42,5 @@ def test_stitcher(tmp_path: Path) -> None:
         matcher_type="bf",
         number_feature=500,
     )
-    stitcher.stitcher(str(tmp_path / "test_result.png"))
+    stitcher.stitcher(str(tmp_path / "test_result.png"), True)
     assert Path(tmp_path / "test_result.png").exists()

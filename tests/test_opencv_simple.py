@@ -22,5 +22,5 @@ def test_stitching_status(status_num: int, status: str) -> None:
 def test_stitcher(tmp_path: Path) -> None:
     """Test for stitching method of SimpleStitcher"""
     stitcher = SimpleStitcher(Path("./test_data/mountain"))
-    stitcher.stitcher(str(tmp_path / "test_result.png"))
+    stitcher.stitcher(str(tmp_path / "test_result.png"), True)
     assert Path(tmp_path / "test_result.png").exists()
