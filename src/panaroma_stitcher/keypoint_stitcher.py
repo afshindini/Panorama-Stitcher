@@ -110,7 +110,7 @@ class KeypointStitcher(ImageLoader):
             return result_image
         return result_image[crds[1] : crds[1] + crds[3], crds[0] : crds[0] + crds[2]]
 
-    def stitcher(self, result_path: str) -> None:
+    def stitcher(self, result_path: str, framer: bool) -> None:
         """Stitch all the images together"""
         if len(self.images) == 0:
             logger.warning("No images to stitch.")
@@ -122,6 +122,6 @@ class KeypointStitcher(ImageLoader):
         for idx in range(2, len(self.images)):
             temp = self._stitcher_helper(self.images[idx], stitched_image)
             stitched_image = temp
-        crds = self._boundary_cleaner_crds(stitched_image)
-        stitched_image = self._boundary_cleaner(stitched_image, crds)
-        self.save_result(cv2.cvtColor(stitched_image, cv2.COLOR_BGR2RGB), result_path)
+        self.save_result(
+            cv2.cvtColor(stitched_image, cv2.COLOR_BGR2RGB), result_path, framer
+        )

@@ -46,7 +46,6 @@ def test_save_result(tmp_path: Path) -> None:
     """Unit test for save_result method of ImageLoader"""
     image_handler = ImageLoader(Path("./test_data/castle"))
     image_handler.save_result(
-        np.ones([100, 100]),
-        str(tmp_path / "test_result.png"),
+        np.ones([100, 100]), str(tmp_path / "test_result.png"), False
     )
     assert Path(tmp_path / "test_result.png").exists()

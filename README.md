@@ -67,19 +67,6 @@ panaroma_stitcher -vv -d ./test_data/river kornia --method local --features 100 
 panaroma_stitcher -vv -d ./test_data/mountain kornia --method keynote --features 100 --matcher mnn
 ```
 
-### Keypoint Stitcher
-This is a simple stitcher that tries to stitch a pair of images from a folder recursively. It performs well in some cases where the other methods do not work well.
-However, it might be a bit slow if the number of features in the detector are large. Some options for this method are:
-- `--matching_method` to be selected as "bf" or "flann".
-- `--detector_method` to be selected as "sift", "orb", or "brisk".
-- `--number_feature` can affect the performance significantly in some cases.
-
-Some examples of using this method:
-```shell
-panaroma_stitcher -vv -d ./test_data/mountain keypoint-stitcher --matching_method bf --detector_method sift --number_feature 500
-panaroma_stitcher -vv -d ./test_data/river keypoint-stitcher --matching_method bf --detector_method sift --number_feature 500
-```
-
 ### Sequential Stitcher
 This is a simple, fast, and accurate and sequential stitcher images that tries to find the similarity between pairs of images and then locate the images in the final stitched image properly.
 It is good to know that the current code is written in a such a way that the input images should be taken from left to right.
@@ -95,6 +82,19 @@ Some examples of using this method:
 panaroma_stitcher -vv -d ./test_data/boat sequential-stitcher --matching_method bf --detector_method sift --number_feature 500 --final_shape 3000 18000
 panaroma_stitcher -vv -d ./test_data/river sequential-stitcher --matching_method bf --detector_method sift --number_feature 500 --final_shape 1000 3000
 panaroma_stitcher -vv -d ./test_data/mountain sequential-stitcher --matching_method bf --detector_method sift --number_feature 500 --final_shape 300 800
+```
+
+### Keypoint Stitcher
+This is a simple stitcher that tries to stitch a pair of images from a folder recursively. It performs well in some cases where the other methods do not work well.
+However, it might be a bit slow if the number of features in the detector are large. Some options for this method are:
+- `--matching_method` to be selected as "bf" or "flann".
+- `--detector_method` to be selected as "sift", "orb", or "brisk".
+- `--number_feature` can affect the performance significantly in some cases.
+
+Some examples of using this method:
+```shell
+panaroma_stitcher -vv -d ./test_data/mountain keypoint-stitcher --matching_method bf --detector_method sift --number_feature 500
+panaroma_stitcher -vv -d ./test_data/river keypoint-stitcher --matching_method bf --detector_method sift --number_feature 500
 ```
 
 ## How to Develop

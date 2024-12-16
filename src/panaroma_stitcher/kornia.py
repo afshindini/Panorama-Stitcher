@@ -59,4 +59,4 @@ class KorniaStitcher(ImageLoader):
         image_stitcher = ImageStitcher(self.matcher, estimator="ransac")
         with torch.no_grad():
             result = image_stitcher(*self.images)
-        self.save_result(krn.tensor_to_image(result), result_path)  # type: ignore
+        self.save_result(krn.tensor_to_image(result), result_path, False)  # type: ignore

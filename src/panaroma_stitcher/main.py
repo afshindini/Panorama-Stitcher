@@ -39,9 +39,20 @@ logger = logging.getLogger(__name__)
     default=Path("./results.png"),
     help="Path to save the result file.",
 )
+@click.option(
+    "--cleaner",
+    is_flag=True,
+    default=True,
+    help="It crops the final image to remove the black background",
+)
 @click.pass_context
 def panaroma_stitcher_cli(
-    ctx: Any, verbose: int, resize_shape: Tuple[int], data_path: Path, result_path: Path
+    ctx: Any,
+    verbose: int,
+    resize_shape: Tuple[int],
+    data_path: Path,
+    result_path: Path,
+    cleaner: bool,
 ) -> None:
     """This rep can stitch multi panorama images"""
     if verbose == 1:
@@ -61,6 +72,7 @@ def panaroma_stitcher_cli(
         )
     ctx.obj["data_path"] = data_path
     ctx.obj["result_path"] = result_path
+    ctx.obj["cleaner"] = cleaner
 
 
 @panaroma_stitcher_cli.command()
@@ -125,7 +137,7 @@ def opencv_simple(ctx: Any, stitcher_type: str) -> None:
         resize_shape=ctx.obj["resize_shape"],
         stitcher_type=stitcher_type,
     )
-    stitcher.stitcher(ctx.obj["result_path"])
+    stitcher.stitcher(ctx.obj["result_path"], ctx.obj["cleaner"])
 
 
 @panaroma_stitcher_cli.command()
@@ -159,7 +171,7 @@ def keypoint_stitcher(
         matcher_type=matching_method,
         number_feature=number_feature,
     )
-    stitcher.stitcher(ctx.obj["result_path"])
+    stitcher.stitcher(ctx.obj["result_path"], ctx.obj["cleaner"])
 
 
 @panaroma_stitcher_cli.command()
@@ -220,7 +232,7 @@ def detailed_stitcher(  # pylint: disable=R0913, R0917
         camera_adjustor=cam_adj,
         camera_estimator=cam_est,
     )
-    stitcher.stitcher(ctx.obj["result_path"])
+    stitcher.stitcher(ctx.obj["result_path"], ctx.obj["cleaner"])
 
 
 @panaroma_stitcher_cli.command()
@@ -249,7 +261,7 @@ def sequential_stitcher(
     matching_method: str,
     detector_method: str,
     number_feature: int,
-    final_shape: Tuple[int],
+    final_shape: Tuple[int, int],
 ) -> None:
     """This is cli for sequential stitcher techniques"""
     stitcher = SequentialStitcher(
@@ -260,4 +272,4 @@ def sequential_stitcher(
         number_feature=number_feature,
         final_size=final_shape,
     )
-    stitcher.stitcher(ctx.obj["result_path"])
+    stitcher.stitcher(ctx.obj["result_path"], ctx.obj["cleaner"])
