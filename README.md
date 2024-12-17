@@ -13,11 +13,11 @@ General options can be selected before applying the stitching methods. These opt
 - Select the verbose value for logging for example as `-v` depending on what kind of logs you want to see.
 
 The available methods are as:
-- [Simple Opencv Stitcher](###-simple-opencv-stitcher)
-- [Detailed Stitching/Opencv Stitcher](###-detailed-stitching/opencv-stitcher)
-- [Kornia Stitcher](###-kornia-stitcher)
-- [Keypoint Stitcher](###-keypoint-stitcher)
-- [Simple Opencv Stitcher](###-simple-opencv-stitcher)
+- [Simple Opencv Stitcher](#simple-opencv-stitcher)
+- [Detailed Stitching/Opencv Stitcher](#detailed-stitching/opencv-stitcher)
+- [Kornia Stitcher](#kornia-stitcher)
+- [Keypoint Stitcher](#keypoint-stitcher)
+- [Sequential Stitcher](#sequential-stitcher)
 
 ### Simple OpenCV Stitcher
 This method mainly uses stitcher class from opencv to create the panorama images from multi images. It is one of the fastest and applicable methods in case of multi-image stitching.
@@ -28,7 +28,10 @@ A simple code to stitch boat test images is:
 ```shell
 panaroma_stitcher -vv -d ./test_data/boat opencv-simple --stitcher_type panorama
 ```
-This method is recommended than other methods as it is fast, and it can stitch multi high resolution images properly.
+This method is recommended than other methods as it is fast, and it can stitch multi high resolution images properly. As an example:
+<p align="center">
+    <img width="1000" src="./results/boat_simple_stitcher.png" alt="Simple Stitcher">
+</p>
 
 ### Detailed Stitching/Opencv Stitcher
 This method is a more detailed version of the above simple stitcher methods based on opencv/stitching libraries. It is quite fast and have good accuracy
@@ -49,6 +52,11 @@ panaroma_stitcher -vv -d ./test_data/map detailed-stitcher --detect_method brisk
 panaroma_stitcher -vv -d ./test_data/castle detailed-stitcher --detect_method orb --match_type homography --num_feat 500 --device cpu --conf_thr 0.05 --cam_est homography --cam_adj ray
 panaroma_stitcher -vv -d ./test_data/newspaper detailed-stitcher --detect_method brisk --match_type homography --num_feat 500 --device cpu --conf_thr 0.05 --cam_est homography --cam_adj ray
 ```
+As an example:
+<p align="center">
+    <img width="1000" src="./results/map_detailed_stitcher.png" alt="Detailed Stitcher">
+</p>
+
 
 ### Kornia Stitcher
 This method is based on `kornia` library, and three feature matcher as `LOFTR` deep feature matcher, `GFTTAffNetHardNet`,
@@ -64,8 +72,11 @@ Some examples of using these methods:
 ```shell
 panaroma_stitcher -vv -d ./test_data/mountain kornia --method loftr --loftr_model outdoor
 panaroma_stitcher -vv -d ./test_data/river kornia --method local --features 100 --matcher smnn
-panaroma_stitcher -vv -d ./test_data/mountain kornia --method keynote --features 100 --matcher mnn
 ```
+As an example:
+<p align="center">
+    <img src="./results/mountain_kornia_stitcher.png" alt="Kornia Stitcher">
+</p>
 
 ### Sequential Stitcher
 This is a simple, fast, and accurate and sequential stitcher images that tries to find the similarity between pairs of images and then locate the images in the final stitched image properly.
@@ -83,6 +94,10 @@ panaroma_stitcher -vv -d ./test_data/boat sequential-stitcher --matching_method 
 panaroma_stitcher -vv -d ./test_data/river sequential-stitcher --matching_method bf --detector_method sift --number_feature 500 --final_shape 1000 3000
 panaroma_stitcher -vv -d ./test_data/mountain sequential-stitcher --matching_method bf --detector_method sift --number_feature 500 --final_shape 300 800
 ```
+As an example:
+<p align="center">
+    <img width="1000" src="./results/river_sequential_stitcher.png" alt="Kornia Stitcher">
+</p>
 
 ### Keypoint Stitcher
 This is a simple stitcher that tries to stitch a pair of images from a folder recursively. It performs well in some cases where the other methods do not work well.
@@ -96,6 +111,10 @@ Some examples of using this method:
 panaroma_stitcher -vv -d ./test_data/mountain keypoint-stitcher --matching_method bf --detector_method sift --number_feature 500
 panaroma_stitcher -vv -d ./test_data/river keypoint-stitcher --matching_method bf --detector_method sift --number_feature 500
 ```
+As an example:
+<p align="center">
+    <img src="./results/castle_keypoint_stitcher.png" alt="Kornia Stitcher">
+</p>
 
 ## How to Develop
 Do the following only once after creating your project:
