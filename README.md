@@ -132,4 +132,28 @@ Then create a branch with `git checkout -b BRANCH_NAME` for further developments
 - For applying changes use `pre-commit run --all-files`.
 
 ## Docker Container
-Under development.
+To run the docker with ssh, do the following first and then based on your need select ,test, development, or production containers:
+```shell
+export DOCKER_BUILDKIT=1
+export DOCKER_SSHAGENT="-v $SSH_AUTH_SOCK:$SSH_AUTH_SOCK -e SSH_AUTH_SOCK"
+```
+### Test Container
+This container is used for testing purposes while it runs the test
+```shell
+docker build --progress plain --ssh default --target test -t panaroma_docker:test .
+docker run -it --rm -v "$(pwd):/app" $(echo $DOCKER_SSHAGENT) panaroma_docker:test
+```
+
+### Development Container
+This container can be used for development purposes:
+```shell
+docker build --progress plain --ssh default --target development -t panaroma_docker:development .
+docker run -it --rm -v "$(pwd):/app" -v /tmp:/tmp $(echo $DOCKER_SSHAGENT) panaroma_docker:development
+```
+
+### Production Container
+This container can be used for production purposes:
+```shell
+docker build --progress plain --ssh default --target production -t panaroma_docker:production .
+docker run -it --rm -v "$(pwd):/app" -v /tmp:/tmp $(echo $DOCKER_SSHAGENT) panaroma_docker:development panaroma_stitcher -vv -d ./test_data/boat opencv-simple --stitcher_type panorama
+```
